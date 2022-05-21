@@ -10,11 +10,18 @@ class MainScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: BlocBuilder<TrailBloc, TrailBlocState>(builder: (context, state) {
-        return Center(
+        if (state is LoadingState) {
+          return const Center(child: Text("Loading..."));
+        }
+        if (state is TrailState) {
+          return Center(
             child: Column(children: [
-          Text(state.trail.title),
-          Text(state.trail.description),
-        ]));
+              Text(state.trail.title),
+              Text(state.trail.description),
+            ]),
+          );
+        }
+        throw Exception();
       }),
     );
   }
