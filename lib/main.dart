@@ -38,7 +38,11 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: const MainScreen(),
+          routes: {
+            "/": (context) => const MainScreen(startingTab: 0),
+            "/discover": (context) => const MainScreen(startingTab: 1),
+            "/favorites": (context) => const MainScreen(startingTab: 2),
+          }
         ));
   }
 }
