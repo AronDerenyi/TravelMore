@@ -9,21 +9,16 @@ class TrailRepositoryFirestore implements TrailRepository {
   @override
   Future<Trail> getTrail(String id) async {
     var db = FirebaseFirestore.instance;
-    return TrailFromFirestore.fromFirestore(
-      await db.collection("trails").doc(id).get(),
-    );
+    var data = await db.collection("trails").doc(id).get();
+    return TrailFirestore.fromFirestore(data);
   }
 }
 
-extension TrailFromFirestore on Trail {
-  static Future<Trail> fromFirestore(
-    DocumentSnapshot<Map<String, dynamic>> data,
-  ) async =>
+extension TrailFirestore on Trail {
+  static Trail fromFirestore(DocumentSnapshot<Map<String, dynamic>> data) =>
       Trail(
         id: data.id,
-        region: await RegionFromFirestore.fromFirestore(
-          await data["region"].get(),
-        ),
+        regionId: data["region"].id,
         title: data["title"],
         description: data["description"],
         images: List.from(data["images"]),
@@ -39,7 +34,7 @@ extension TrailFromFirestore on Trail {
       );
 }
 
-extension RegionFromFirestore on Region {
+extension RegionFirestore on Region {
   static Future<Region> fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> data,
   ) async =>

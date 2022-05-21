@@ -1,10 +1,9 @@
 import 'coordinates.dart';
 import 'elevation.dart';
-import 'region.dart';
 
 class Trail {
   final String id;
-  final Region region;
+  final String regionId;
 
   final String title;
   final String description;
@@ -16,7 +15,7 @@ class Trail {
 
   Trail(
       {required this.id,
-      required this.region,
+      required this.regionId,
       required this.title,
       required this.description,
       required this.images,

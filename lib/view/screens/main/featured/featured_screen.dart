@@ -1,10 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:travel_more/bloc/featured_trails_bloc.dart';
 
-class FeaturedScreen extends StatelessWidget {
+class FeaturedScreen extends StatefulWidget {
   const FeaturedScreen({Key? key}) : super(key: key);
 
   @override
+  State<StatefulWidget> createState() => _FeaturedScreenState();
+}
+
+class _FeaturedScreenState extends State<FeaturedScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<FeaturedTrailsBloc>().add(LoadEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Center(child: Text("Featured"));
+    return BlocBuilder<FeaturedTrailsBloc, FeaturedTrailsBlocState>(
+      builder: (context, state) {
+        if (state is LoadingState) {
+          return const Center(child: Text("Loading..."));
+        }
+
+        if (state is ReadyState) {
+          return ListView.builder(
+            itemCount: state.featuredTrails.length,
+            itemBuilder: (context, index) =>
+                Text(state.featuredTrails[index].title),
+          );
+        }
+
+        throw Exception();
+      },
+    );
   }
 }
