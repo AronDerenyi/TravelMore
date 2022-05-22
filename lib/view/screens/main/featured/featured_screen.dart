@@ -17,6 +17,7 @@ class FeaturedScreen extends StatelessWidget {
 
         if (state is TrailsReadyState) {
           return ListView.separated(
+            clipBehavior: Clip.none,
             padding: const EdgeInsets.all(24),
             separatorBuilder: (context, index) => const SizedBox(height: 24),
             itemCount: state.featuredTrails.length + 1,

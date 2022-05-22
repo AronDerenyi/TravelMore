@@ -5,6 +5,7 @@ import 'package:travel_more/bloc/featured_trails_bloc.dart';
 import 'package:travel_more/bloc/regions_bloc.dart';
 import 'package:travel_more/data/featured_trails_repository_firestore.dart';
 import 'package:travel_more/data/region_repository_firestore.dart';
+import 'package:travel_more/view/screens/main/main_navigation_bar.dart';
 import 'discover/discover_screen.dart';
 import 'favorites/favorites_screen.dart';
 import 'featured/featured_screen.dart';
@@ -41,35 +42,28 @@ class _MainScreenState extends State<MainScreen> {
           create: (context) => RegionsBloc()..add(LoadRegionsEvent()),
         ),
       ],
-      child: Scaffold(
-        body: SafeArea(
-          child: const [
-            FeaturedScreen(),
-            DiscoverScreen(),
-            FavoritesScreen()
-          ][_selectedTab],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.feed),
-              label: 'Featured',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Discover',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.star),
-              label: 'Favorites',
-            ),
-          ],
-          currentIndex: _selectedTab,
-          onTap: (selected) {
-            setState(() {
-              _selectedTab = selected;
-            });
-          },
+      child: Material(
+        child: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: const [
+                  FeaturedScreen(),
+                  DiscoverScreen(),
+                  FavoritesScreen()
+                ][_selectedTab],
+              ),
+              Padding(
+                padding: EdgeInsets.all(16),
+                child: MainNavigationBar(
+                  selectedIndex: _selectedTab,
+                  onSelected: (selected) => setState(
+                    () => _selectedTab = selected,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

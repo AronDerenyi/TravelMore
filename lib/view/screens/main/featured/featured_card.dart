@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class FeaturedCard extends StatelessWidget {
   final String title;
   final String image;
-  final void Function() onTap;
+  final VoidCallback onTap;
 
   const FeaturedCard({
     Key? key,

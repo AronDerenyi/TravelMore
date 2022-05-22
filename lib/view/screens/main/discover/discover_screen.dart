@@ -16,6 +16,7 @@ class DiscoverScreen extends StatelessWidget {
 
         if (state is RegionsReadyState) {
           return ListView.builder(
+            clipBehavior: Clip.none,
             itemCount: state.regions.length,
             itemBuilder: (context, index) {
               var region = state.regions[index];
