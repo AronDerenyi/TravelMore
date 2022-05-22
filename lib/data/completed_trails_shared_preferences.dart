@@ -12,7 +12,7 @@ class CompletedTrailsSharedPreferences implements CompletedTrailsRepository {
       : _trailSet = TrailSetSharedPreferences(preferences, _key);
 
   @override
-  Future<List<String>> getCompletedTrailIds() async => _trailSet.getTrailIds();
+  Future<Set<String>> getCompletedTrailIds() async => _trailSet.getTrailIds();
 
   @override
   Future<bool> isCompleted(String trailId) async => _trailSet.contains(trailId);

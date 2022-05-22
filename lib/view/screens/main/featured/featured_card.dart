@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:travel_more/bloc/featured_trails_bloc.dart';
+import 'package:travel_more/view/screens/trail/trail_screen.dart';
 
 class FeaturedCard extends StatelessWidget {
-  final String title;
-  final String image;
-  final VoidCallback onTap;
+  final FeaturedItem item;
 
   const FeaturedCard({
     Key? key,
-    required this.title,
-    required this.image,
-    required this.onTap,
+    required this.item,
   }) : super(key: key);
 
   @override
@@ -39,19 +37,24 @@ class FeaturedCard extends StatelessWidget {
             children: [
               Positioned.fill(
                 child: Image.network(
-                  image,
+                  item.image,
                   fit: BoxFit.cover,
                 ),
               ),
               Positioned(
                 left: titlePadding.dx,
                 bottom: titlePadding.dy,
-                child: Text(title, style: textTheme.headlineMedium),
+                child: Text(item.title, style: textTheme.headlineMedium),
               ),
               Positioned.fill(
                 child: Material(
                   type: MaterialType.transparency,
-                  child: InkWell(onTap: onTap),
+                  child: InkWell(
+                    onTap: () => Navigator.push(
+                      context,
+                      TrailScreen.route(item.trailId),
+                    ),
+                  ),
                 ),
               ),
             ],

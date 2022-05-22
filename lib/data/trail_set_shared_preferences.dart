@@ -14,8 +14,8 @@ class TrailSetSharedPreferences {
         _key = key,
         _set = Set.from(preferences.getStringList(key) ?? []);
 
-  List<String> getTrailIds() {
-    return _set.toList();
+  Set<String> getTrailIds() {
+    return Set.from(_set);
   }
 
   bool contains(String trailId) {

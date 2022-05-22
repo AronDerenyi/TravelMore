@@ -12,7 +12,7 @@ class FavoriteTrailsSharedPreferences implements FavoriteTrailsRepository {
       : _trailSet = TrailSetSharedPreferences(preferences, _key);
 
   @override
-  Future<List<String>> getFavoriteTrailIds() async => _trailSet.getTrailIds();
+  Future<Set<String>> getFavoriteTrailIds() async => _trailSet.getTrailIds();
 
   @override
   Future<bool> isFavorite(String trailId) async => _trailSet.contains(trailId);

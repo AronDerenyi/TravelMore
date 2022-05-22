@@ -1,31 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:travel_more/bloc/regions_bloc.dart';
-import 'package:travel_more/view/screens/region/region_screen.dart';
+import 'package:travel_more/bloc/discover_bloc.dart';
+import 'package:travel_more/view/screens/main/discover/discover_region_row.dart';
 
 class DiscoverScreen extends StatelessWidget {
   const DiscoverScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RegionsBloc, RegionsBlocState>(
+    return BlocBuilder<DiscoverBloc, DiscoverBlocState>(
       builder: (context, state) {
-        if (state is LoadingRegionsState) {
+        var safeArea = MediaQuery.of(context).padding;
+
+        if (state is LoadingDiscoverState) {
           return const Center(child: Text("Loading..."));
         }
 
-        if (state is RegionsReadyState) {
+        if (state is DiscoverReadyState) {
           return ListView.builder(
-            clipBehavior: Clip.none,
+            padding: safeArea.add(const EdgeInsets.symmetric(vertical: 24)),
             itemCount: state.regions.length,
-            itemBuilder: (context, index) {
-              var region = state.regions[index];
-              return ElevatedButton(
-                onPressed: () =>
-                    Navigator.push(context, RegionScreen.route(region.id)),
-                child: Text(region.title),
-              );
-            },
+            itemBuilder: (context, index) => DiscoverRegionRow(
+              region: state.regions[index],
+            ),
           );
         }
 

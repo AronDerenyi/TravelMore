@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travel_more/bloc/featured_trails_bloc.dart';
 import 'package:travel_more/view/screens/main/featured/featured_card.dart';
-import 'package:travel_more/view/screens/trail/trail_screen.dart';
 
 class FeaturedScreen extends StatelessWidget {
   const FeaturedScreen({Key? key}) : super(key: key);
@@ -11,14 +10,15 @@ class FeaturedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FeaturedTrailsBloc, FeaturedTrailsBlocState>(
       builder: (context, state) {
-        if (state is LoadingTrailsState) {
+        var safeArea = MediaQuery.of(context).padding;
+
+        if (state is LoadingFeaturedState) {
           return const Center(child: Text("Loading..."));
         }
 
-        if (state is TrailsReadyState) {
+        if (state is FeaturedReadyState) {
           return ListView.separated(
-            clipBehavior: Clip.none,
-            padding: const EdgeInsets.all(24),
+            padding: safeArea.add(const EdgeInsets.all(24)),
             separatorBuilder: (context, index) => const SizedBox(height: 24),
             itemCount: state.items.length + 1,
             itemBuilder: (context, index) {
@@ -44,13 +44,8 @@ class FeaturedScreen extends StatelessWidget {
                   ],
                 );
               } else {
-                var item = state.items[index - 1];
                 return FeaturedCard(
-                  title: item.title,
-                  image: item.image,
-                  onTap: () => Navigator.of(context).push(
-                    TrailScreen.route(item.trailId),
-                  ),
+                  item: state.items[index - 1],
                 );
               }
             },

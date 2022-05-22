@@ -1,7 +1,7 @@
 import 'dart:async';
 
 abstract class FavoriteTrailsRepository {
-  Future<List<String>> getFavoriteTrailIds();
+  Future<Set<String>> getFavoriteTrailIds();
   Future<bool> isFavorite(String trailId);
   Future<bool> addFavorite(String trailId);
   Future<bool> removeFavorite(String trailId);
