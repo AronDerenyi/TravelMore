@@ -30,14 +30,12 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) {
-          return FeaturedTrailsBloc(FeaturedTrailsRepositoryFirestore())
-            ..add(LoadTrailsEvent());
-        }),
-        BlocProvider(create: (context) {
-          return RegionsBloc(RegionRepositoryFirestore())
-            ..add(LoadRegionsEvent());
-        }),
+        BlocProvider(
+          create: (context) => FeaturedTrailsBloc()..add(LoadTrailsEvent()),
+        ),
+        BlocProvider(
+          create: (context) => RegionsBloc()..add(LoadRegionsEvent()),
+        ),
       ],
       child: Scaffold(
         appBar: AppBar(),

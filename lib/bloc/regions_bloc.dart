@@ -1,9 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:travel_more/dependencies.dart';
 import 'package:travel_more/domain/model/region.dart';
 import 'package:travel_more/domain/repositories/region_repository.dart';
 
 class RegionsBloc extends Bloc<RegionsBlocEvent, RegionsBlocState> {
-  RegionsBloc(RegionRepository repository) : super(LoadingRegionsState()) {
+  RegionRepository repository = injector();
+
+  RegionsBloc() : super(LoadingRegionsState()) {
     on<LoadRegionsEvent>((event, emit) async {
       emit(LoadingRegionsState());
       var regions = await repository.getRegions();

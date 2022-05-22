@@ -1,10 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:travel_more/dependencies.dart';
 import 'package:travel_more/domain/model/trail.dart';
 import 'package:travel_more/domain/repositories/trail_repository.dart';
 
-class RegionBloc
-    extends Bloc<RegionBlocEvent, RegionBlocState> {
-  RegionBloc(TrailRepository repository) : super(LoadingRegionState()) {
+class RegionBloc extends Bloc<RegionBlocEvent, RegionBlocState> {
+  TrailRepository repository = injector();
+
+  RegionBloc() : super(LoadingRegionState()) {
     on<LoadRegionEvent>((event, emit) async {
       emit(LoadingRegionState());
       var trails = await repository.getTrails(event.regionId);

@@ -16,10 +16,7 @@ class RegionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) {
-        return RegionBloc(TrailRepositoryFirestore())
-          ..add(LoadRegionEvent(regionId));
-      },
+      create: (context) => RegionBloc()..add(LoadRegionEvent(regionId)),
       child: Scaffold(
         appBar: AppBar(title: const Text("Region")),
         body: BlocBuilder<RegionBloc, RegionBlocState>(

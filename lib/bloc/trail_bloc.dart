@@ -1,11 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:travel_more/dependencies.dart';
 import 'package:travel_more/domain/model/trail.dart';
 import 'package:travel_more/domain/repositories/trail_repository.dart';
 
 class TrailBloc extends Bloc<TrailBlocEvent, TrailBlocState> {
-  TrailBloc(TrailRepository trailRepository) : super(LoadingTrailState()) {
+  TrailRepository repository = injector();
+
+  TrailBloc() : super(LoadingTrailState()) {
     on<LoadTrailEvent>((event, emit) async {
-      var trail = await trailRepository.getTrail(event.trailId);
+      var trail = await repository.getTrail(event.trailId);
       emit(TrailReadyState(trail));
     });
 
