@@ -20,7 +20,7 @@ class FeaturedScreen extends StatelessWidget {
             clipBehavior: Clip.none,
             padding: const EdgeInsets.all(24),
             separatorBuilder: (context, index) => const SizedBox(height: 24),
-            itemCount: state.featuredTrails.length + 1,
+            itemCount: state.items.length + 1,
             itemBuilder: (context, index) {
               if (index == 0) {
                 var textTheme = Theme.of(context).textTheme;
@@ -44,12 +44,12 @@ class FeaturedScreen extends StatelessWidget {
                   ],
                 );
               } else {
-                var trail = state.featuredTrails[index - 1];
+                var item = state.items[index - 1];
                 return FeaturedCard(
-                  title: trail.title,
-                  image: trail.image,
+                  title: item.title,
+                  image: item.image,
                   onTap: () => Navigator.of(context).push(
-                    TrailScreen.route(trail.trailId),
+                    TrailScreen.route(item.trailId),
                   ),
                 );
               }

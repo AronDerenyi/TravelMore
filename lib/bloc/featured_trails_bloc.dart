@@ -10,8 +10,12 @@ class FeaturedTrailsBloc
   FeaturedTrailsBloc() : super(LoadingTrailsState()) {
     on<LoadTrailsEvent>((event, emit) async {
       emit(LoadingTrailsState());
-      var trails = await repository.getFeaturedTrails();
-      emit(TrailsReadyState(trails));
+      var items = (await repository.getFeaturedTrails())
+          .map<FeaturedItem>(
+            (data) => FeaturedItem(data.title, data.image, data.trailId),
+          )
+          .toList();
+      emit(TrailsReadyState(items));
     });
   }
 }
@@ -25,7 +29,15 @@ abstract class FeaturedTrailsBlocState {}
 class LoadingTrailsState extends FeaturedTrailsBlocState {}
 
 class TrailsReadyState extends FeaturedTrailsBlocState {
-  final List<Featured> featuredTrails;
+  final List<FeaturedItem> items;
 
-  TrailsReadyState(this.featuredTrails);
+  TrailsReadyState(this.items);
+}
+
+class FeaturedItem {
+  final String title;
+  final String image;
+  final String trailId;
+
+  FeaturedItem(this.title, this.image, this.trailId);
 }
