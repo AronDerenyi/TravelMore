@@ -3,25 +3,25 @@ import 'package:travel_more/domain/model/region.dart';
 import 'package:travel_more/domain/repositories/region_repository.dart';
 
 class RegionsBloc extends Bloc<RegionsBlocEvent, RegionsBlocState> {
-  RegionsBloc(RegionRepository repository) : super(LoadingState()) {
-    on<LoadEvent>((event, emit) async {
-      emit(LoadingState());
+  RegionsBloc(RegionRepository repository) : super(LoadingRegionsState()) {
+    on<LoadRegionsEvent>((event, emit) async {
+      emit(LoadingRegionsState());
       var regions = await repository.getRegions();
-      emit(ReadyState(regions));
+      emit(RegionsReadyState(regions));
     });
   }
 }
 
 abstract class RegionsBlocEvent {}
 
-class LoadEvent extends RegionsBlocEvent {}
+class LoadRegionsEvent extends RegionsBlocEvent {}
 
 abstract class RegionsBlocState {}
 
-class LoadingState extends RegionsBlocState {}
+class LoadingRegionsState extends RegionsBlocState {}
 
-class ReadyState extends RegionsBlocState {
+class RegionsReadyState extends RegionsBlocState {
   final List<Region> regions;
 
-  ReadyState(this.regions);
+  RegionsReadyState(this.regions);
 }

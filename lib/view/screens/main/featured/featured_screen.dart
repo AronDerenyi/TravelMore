@@ -13,18 +13,18 @@ class _FeaturedScreenState extends State<FeaturedScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<FeaturedTrailsBloc>().add(LoadEvent());
+    context.read<FeaturedTrailsBloc>().add(LoadTrailsEvent());
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FeaturedTrailsBloc, FeaturedTrailsBlocState>(
       builder: (context, state) {
-        if (state is LoadingState) {
+        if (state is LoadingTrailsState) {
           return const Center(child: Text("Loading..."));
         }
 
-        if (state is ReadyState) {
+        if (state is TrailsReadyState) {
           return ListView.builder(
             itemCount: state.featuredTrails.length,
             itemBuilder: (context, index) =>

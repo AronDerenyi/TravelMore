@@ -13,18 +13,18 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<RegionsBloc>().add(LoadEvent());
+    context.read<RegionsBloc>().add(LoadRegionsEvent());
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RegionsBloc, RegionsBlocState>(
       builder: (context, state) {
-        if (state is LoadingState) {
+        if (state is LoadingRegionsState) {
           return const Center(child: Text("Loading..."));
         }
 
-        if (state is ReadyState) {
+        if (state is RegionsReadyState) {
           return ListView.builder(
             itemCount: state.regions.length,
             itemBuilder: (context, index) =>

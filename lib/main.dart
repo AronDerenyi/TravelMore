@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (context) => FavoriteTrailsBloc()),
           BlocProvider(create: (context) => FeaturedTrailsBloc(FeaturedTrailsRepositoryFirestore())),
-          BlocProvider(create: (context) => RegionTrailsBloc()),
+          BlocProvider(create: (context) => RegionBloc()),
           BlocProvider(create: (context) => RegionsBloc(RegionRepositoryFirestore())),
           BlocProvider(create: (context) => TrailBloc(TrailRepositoryFirestore())),
         ],

@@ -5,25 +5,25 @@ import 'package:travel_more/domain/repositories/featured_trails_repository.dart'
 class FeaturedTrailsBloc
     extends Bloc<FeaturedTrailsBlocEvent, FeaturedTrailsBlocState> {
 
-  FeaturedTrailsBloc(FeaturedTrailsRepository repository) : super(LoadingState()) {
-    on<LoadEvent>((event, emit) async {
-      emit(LoadingState());
+  FeaturedTrailsBloc(FeaturedTrailsRepository repository) : super(LoadingTrailsState()) {
+    on<LoadTrailsEvent>((event, emit) async {
+      emit(LoadingTrailsState());
       var trails = await repository.getFeaturedTrails();
-      emit(ReadyState(trails));
+      emit(TrailsReadyState(trails));
     });
   }
 }
 
 abstract class FeaturedTrailsBlocEvent {}
 
-class LoadEvent extends FeaturedTrailsBlocEvent {}
+class LoadTrailsEvent extends FeaturedTrailsBlocEvent {}
 
 abstract class FeaturedTrailsBlocState {}
 
-class LoadingState extends FeaturedTrailsBlocState {}
+class LoadingTrailsState extends FeaturedTrailsBlocState {}
 
-class ReadyState extends FeaturedTrailsBlocState {
+class TrailsReadyState extends FeaturedTrailsBlocState {
   final List<Featured> featuredTrails;
 
-  ReadyState(this.featuredTrails);
+  TrailsReadyState(this.featuredTrails);
 }
