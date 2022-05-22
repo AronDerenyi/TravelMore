@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travel_more/bloc/featured_trails_bloc.dart';
+import 'package:travel_more/view/screens/trail/trail_screen.dart';
 
 class FeaturedScreen extends StatelessWidget {
   const FeaturedScreen({Key? key}) : super(key: key);
@@ -16,8 +17,14 @@ class FeaturedScreen extends StatelessWidget {
         if (state is TrailsReadyState) {
           return ListView.builder(
             itemCount: state.featuredTrails.length,
-            itemBuilder: (context, index) =>
-                Text(state.featuredTrails[index].title),
+            itemBuilder: (context, index) {
+              var trail = state.featuredTrails[index];
+              return ElevatedButton(
+                onPressed: () =>
+                    Navigator.push(context, TrailScreen.route(trail.trailId)),
+                child: Text(trail.title),
+              );
+            },
           );
         }
 
