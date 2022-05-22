@@ -1,12 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_more/view/screens/main/main_screen.dart';
+import 'package:travel_more/view/theme/app_text_theme.dart';
+import 'package:travel_more/view/theme/app_theme.dart';
 import 'dependencies.dart';
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -23,10 +25,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      theme: AppTheme.data,
+      home: Builder(
+        builder: (context) => DefaultTextStyle(
+          style: Theme.of(context).textTheme.bodyText1!,
+          child: const MainScreen(),
+        ),
       ),
-      home: const MainScreen(),
     );
   }
 }

@@ -42,12 +42,13 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ],
       child: Scaffold(
-        appBar: AppBar(),
-        body: const [
-          FeaturedScreen(),
-          DiscoverScreen(),
-          FavoritesScreen()
-        ][_selectedTab],
+        body: SafeArea(
+          child: const [
+            FeaturedScreen(),
+            DiscoverScreen(),
+            FavoritesScreen()
+          ][_selectedTab],
+        ),
         bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(
