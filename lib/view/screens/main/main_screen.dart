@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:travel_more/bloc/featured_trails_bloc.dart';
+import 'package:travel_more/bloc/regions_bloc.dart';
+import 'package:travel_more/data/featured_trails_repository_firestore.dart';
+import 'package:travel_more/data/region_repository_firestore.dart';
 import 'discover/discover_screen.dart';
 import 'favorites/favorites_screen.dart';
 import 'featured/featured_screen.dart';
@@ -23,34 +28,46 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: const [
-        FeaturedScreen(),
-        DiscoverScreen(),
-        FavoritesScreen()
-      ][_selectedTab],
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.feed),
-            label: 'Featured',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Discover',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.star),
-            label: 'Favorites',
-          ),
-        ],
-        currentIndex: _selectedTab,
-        onTap: (selected) {
-          setState(() {
-            _selectedTab = selected;
-          });
-        },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) {
+          return FeaturedTrailsBloc(FeaturedTrailsRepositoryFirestore())
+            ..add(LoadTrailsEvent());
+        }),
+        BlocProvider(create: (context) {
+          return RegionsBloc(RegionRepositoryFirestore())
+            ..add(LoadRegionsEvent());
+        }),
+      ],
+      child: Scaffold(
+        appBar: AppBar(),
+        body: const [
+          FeaturedScreen(),
+          DiscoverScreen(),
+          FavoritesScreen()
+        ][_selectedTab],
+        bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.feed),
+              label: 'Featured',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: 'Discover',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.star),
+              label: 'Favorites',
+            ),
+          ],
+          currentIndex: _selectedTab,
+          onTap: (selected) {
+            setState(() {
+              _selectedTab = selected;
+            });
+          },
+        ),
       ),
     );
   }

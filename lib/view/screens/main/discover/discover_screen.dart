@@ -1,20 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travel_more/bloc/regions_bloc.dart';
+import 'package:travel_more/view/screens/region/region_screen.dart';
 
-class DiscoverScreen extends StatefulWidget {
+class DiscoverScreen extends StatelessWidget {
   const DiscoverScreen({Key? key}) : super(key: key);
-  
-  @override
-  State<StatefulWidget> createState() => _DiscoverScreenState();
-}
-
-class _DiscoverScreenState extends State<DiscoverScreen> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<RegionsBloc>().add(LoadRegionsEvent());
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +17,14 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
         if (state is RegionsReadyState) {
           return ListView.builder(
             itemCount: state.regions.length,
-            itemBuilder: (context, index) =>
-                Text(state.regions[index].title),
+            itemBuilder: (context, index) {
+              var region = state.regions[index];
+              return ElevatedButton(
+                onPressed: () =>
+                    Navigator.push(context, RegionScreen.route(region.id)),
+                child: Text(region.title),
+              );
+            },
           );
         }
 

@@ -1,11 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:travel_more/domain/model/coordinates.dart';
 import 'package:travel_more/domain/model/elevation.dart';
-import 'package:travel_more/domain/model/region.dart';
 import 'package:travel_more/domain/model/trail.dart';
 import 'package:travel_more/domain/repositories/trail_repository.dart';
 
 class TrailRepositoryFirestore implements TrailRepository {
+  @override
+  Future<List<Trail>> getTrails(String regionId) async {
+    var db = FirebaseFirestore.instance;
+    var data = await db
+        .collection("trails")
+        .where("region", isEqualTo: db.collection("regions").doc(regionId))
+        .get();
+
+    return data.docs
+        .map<Trail>((trail) => TrailFirestore.fromFirestore(trail))
+        .toList();
+  }
+
   @override
   Future<Trail> getTrail(String id) async {
     var db = FirebaseFirestore.instance;

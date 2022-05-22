@@ -1,14 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:travel_more/bloc/favorite_trails_bloc.dart';
-import 'package:travel_more/bloc/featured_trails_bloc.dart';
-import 'package:travel_more/bloc/region_trails_bloc.dart';
-import 'package:travel_more/bloc/regions_bloc.dart';
-import 'package:travel_more/bloc/trail_bloc.dart';
-import 'package:travel_more/data/featured_trails_repository_firestore.dart';
-import 'package:travel_more/data/region_repository_firestore.dart';
-import 'package:travel_more/data/trail_repository_firestore.dart';
 import 'package:travel_more/view/screens/main/main_screen.dart';
 import 'firebase_options.dart';
 
@@ -27,24 +18,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (context) => FavoriteTrailsBloc()),
-          BlocProvider(create: (context) => FeaturedTrailsBloc(FeaturedTrailsRepositoryFirestore())),
-          BlocProvider(create: (context) => RegionBloc()),
-          BlocProvider(create: (context) => RegionsBloc(RegionRepositoryFirestore())),
-          BlocProvider(create: (context) => TrailBloc(TrailRepositoryFirestore())),
-        ],
-        child: MaterialApp(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          routes: {
-            "/": (context) => const MainScreen(startingTab: 0),
-            "/discover": (context) => const MainScreen(startingTab: 1),
-            "/favorites": (context) => const MainScreen(startingTab: 2),
-          }
-        ));
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const MainScreen(),
+    );
   }
 }
