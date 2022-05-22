@@ -8,6 +8,8 @@ class DiscoverScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var textTheme = Theme.of(context).textTheme;
+
     return BlocBuilder<DiscoverBloc, DiscoverBlocState>(
       builder: (context, state) {
         var safeArea = MediaQuery.of(context).padding;
@@ -19,10 +21,22 @@ class DiscoverScreen extends StatelessWidget {
         if (state is DiscoverReadyState) {
           return ListView.builder(
             padding: safeArea.add(const EdgeInsets.symmetric(vertical: 24)),
-            itemCount: state.regions.length,
-            itemBuilder: (context, index) => DiscoverRegionRow(
-              region: state.regions[index],
-            ),
+            itemCount: state.regions.length + 1,
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+                  child: Text(
+                    "Discover",
+                    style: textTheme.headlineMedium,
+                  ),
+                );
+              } else {
+                return DiscoverRegionRow(
+                  region: state.regions[index - 1],
+                );
+              }
+            },
           );
         }
 
