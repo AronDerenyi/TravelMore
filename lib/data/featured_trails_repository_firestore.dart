@@ -26,5 +26,6 @@ extension FeaturedFirestore on Featured {
         id: data.id,
         title: data["title"],
         trailId: data["trail"].id,
+        image: data["image"],
       );
 }

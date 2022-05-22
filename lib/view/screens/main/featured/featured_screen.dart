@@ -22,7 +22,12 @@ class FeaturedScreen extends StatelessWidget {
               return ElevatedButton(
                 onPressed: () =>
                     Navigator.push(context, TrailScreen.route(trail.trailId)),
-                child: Text(trail.title),
+                child: Stack(
+                  children: [
+                    Image.network(trail.image),
+                    Text(trail.title, style: const TextStyle(color: Colors.white)),
+                  ],
+                ),
               );
             },
           );

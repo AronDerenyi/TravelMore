@@ -13,13 +13,14 @@ class Trail {
   final Elevation elevation;
   final List<Coordinates> coordinates;
 
-  Trail(
-      {required this.id,
-      required this.regionId,
-      required this.title,
-      required this.description,
-      required this.images,
-      required this.distance,
-      required this.elevation,
-      required this.coordinates});
+  Trail({
+    required this.id,
+    required this.regionId,
+    required this.title,
+    required this.description,
+    required this.images,
+    required this.distance,
+    required this.elevation,
+    required this.coordinates,
+  });
 }
