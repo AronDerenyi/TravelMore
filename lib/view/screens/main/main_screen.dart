@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:travel_more/view/screens/main/favorites/favorites_screen.dart';
-import 'package:travel_more/view/screens/main/featured/featured_screen.dart';
-import 'package:travel_more/view/screens/main/regions/regions_screen.dart';
+import 'discover/discover_screen.dart';
+import 'favorites/favorites_screen.dart';
+import 'featured/featured_screen.dart';
 
 class MainScreen extends StatefulWidget {
   final int startingTab;
@@ -27,7 +27,7 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(),
       body: const [
         FeaturedScreen(),
-        RegionsScreen(),
+        DiscoverScreen(),
         FavoritesScreen()
       ][_selectedTab],
       bottomNavigationBar: BottomNavigationBar(

@@ -4,11 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travel_more/bloc/favorite_trails_bloc.dart';
 import 'package:travel_more/bloc/featured_trails_bloc.dart';
 import 'package:travel_more/bloc/region_trails_bloc.dart';
+import 'package:travel_more/bloc/regions_bloc.dart';
 import 'package:travel_more/bloc/trail_bloc.dart';
 import 'package:travel_more/data/featured_trails_repository_firestore.dart';
+import 'package:travel_more/data/region_repository_firestore.dart';
 import 'package:travel_more/data/trail_repository_firestore.dart';
 import 'package:travel_more/view/screens/main/main_screen.dart';
-import 'bloc/regions_bloc.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => FavoriteTrailsBloc()),
           BlocProvider(create: (context) => FeaturedTrailsBloc(FeaturedTrailsRepositoryFirestore())),
           BlocProvider(create: (context) => RegionTrailsBloc()),
-          BlocProvider(create: (context) => RegionsBloc()),
+          BlocProvider(create: (context) => RegionsBloc(RegionRepositoryFirestore())),
           BlocProvider(create: (context) => TrailBloc(TrailRepositoryFirestore())),
         ],
         child: MaterialApp(

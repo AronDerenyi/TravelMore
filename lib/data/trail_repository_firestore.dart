@@ -33,13 +33,3 @@ extension TrailFirestore on Trail {
             .toList(),
       );
 }
-
-extension RegionFirestore on Region {
-  static Future<Region> fromFirestore(
-    DocumentSnapshot<Map<String, dynamic>> data,
-  ) async =>
-      Region(
-        id: data.id,
-        title: data["title"],
-      );
-}
