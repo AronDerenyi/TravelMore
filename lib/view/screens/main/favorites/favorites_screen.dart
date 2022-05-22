@@ -15,18 +15,26 @@ class FavoritesScreen extends StatelessWidget {
         }
 
         if (state is FavoritesReadyState) {
-          return ListView.builder(
-            itemCount: state.favoriteTrails.length,
-            itemBuilder: (context, index) {
-              var trail = state.favoriteTrails[index];
-              return ElevatedButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  TrailScreen.route(trail.id),
-                ),
-                child: Text(trail.title),
-              );
-            },
+          return ListView(
+            children: [
+              Text("Distance: ${state.distance}"),
+              Text("Completed: ${state.completed}"),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const ClampingScrollPhysics(),
+                itemCount: state.favoriteTrails.length,
+                itemBuilder: (context, index) {
+                  var trail = state.favoriteTrails[index];
+                  return ElevatedButton(
+                    onPressed: () => Navigator.push(
+                      context,
+                      TrailScreen.route(trail.id),
+                    ),
+                    child: Text(trail.title),
+                  );
+                },
+              ),
+            ],
           );
         }
 

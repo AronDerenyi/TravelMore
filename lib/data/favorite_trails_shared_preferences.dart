@@ -1,58 +1,31 @@
 import 'dart:async';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travel_more/domain/repositories/favorite_trails_repository.dart';
 
-class FavoriteTrailsSharedPreferences implements FavoriteTrailsRepository {
-  static const String key = "favorites";
-  final SharedPreferences _preferences;
-  Set<String> _favorites;
+import 'trail_set_shared_preferences.dart';
 
-  final StreamController<Set<String>> _changeStream =
-      StreamController.broadcast();
+class FavoriteTrailsSharedPreferences implements FavoriteTrailsRepository {
+  static const String _key = "favorites";
+  final TrailSetSharedPreferences _trailSet;
 
   FavoriteTrailsSharedPreferences(SharedPreferences preferences)
-      : _preferences = preferences,
-        _favorites = Set.from(preferences.getStringList(key) ?? []);
+      : _trailSet = TrailSetSharedPreferences(preferences, _key);
 
   @override
-  Future<List<String>> getFavoriteTrailIds() async {
-    return _favorites.toList();
-  }
+  Future<List<String>> getFavoriteTrailIds() async => _trailSet.getTrailIds();
 
   @override
-  Future<bool> isFavorite(String trailId) async {
-    return _favorites.contains(trailId);
-  }
+  Future<bool> isFavorite(String trailId) async => _trailSet.contains(trailId);
 
   @override
-  Future<bool> addFavorite(String trailId) async {
-    var newFavorites = Set<String>.from(_favorites);
-    if (!newFavorites.add(trailId)) return false;
-    if (!await _preferences.setStringList(key, newFavorites.toList())) {
-      return false;
-    }
-
-    _favorites = newFavorites;
-    _changeStream.add(newFavorites);
-    return true;
-  }
+  Future<bool> addFavorite(String trailId) async => _trailSet.add(trailId);
 
   @override
-  Future<bool> removeFavorite(String trailId) async {
-    var newFavorites = Set<String>.from(_favorites);
-    if (!newFavorites.remove(trailId)) return false;
-    if (!await _preferences.setStringList(key, newFavorites.toList())) {
-      return false;
-    }
+  Future<bool> removeFavorite(String trailId) async =>
+      _trailSet.remove(trailId);
 
-    _favorites = newFavorites;
-    _changeStream.add(newFavorites);
-    return true;
-  }
-  
   @override
-  StreamSubscription<Set<String>> listen(void Function(Set<String> event) onData) {
-    return _changeStream.stream.listen(onData);
-  }
+  StreamSubscription<Set<String>> listen(
+          void Function(Set<String> event) onData) =>
+      _trailSet.listen(onData);
 }

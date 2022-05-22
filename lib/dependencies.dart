@@ -1,9 +1,11 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:travel_more/data/completed_trails_shared_preferences.dart';
 import 'package:travel_more/data/favorite_trails_shared_preferences.dart';
 import 'package:travel_more/data/featured_trails_repository_firestore.dart';
 import 'package:travel_more/data/region_repository_firestore.dart';
 import 'package:travel_more/data/trail_repository_firestore.dart';
+import 'package:travel_more/domain/repositories/completed_trails_repository.dart';
 import 'package:travel_more/domain/repositories/favorite_trails_repository.dart';
 import 'package:travel_more/domain/repositories/featured_trails_repository.dart';
 import 'package:travel_more/domain/repositories/region_repository.dart';
@@ -26,6 +28,12 @@ Future<void> initDependencies() async {
 
   injector.registerSingletonAsync<FavoriteTrailsRepository>(() async {
     return FavoriteTrailsSharedPreferences(
+      await SharedPreferences.getInstance(),
+    );
+  });
+
+  injector.registerSingletonAsync<CompletedTrailsRepository>(() async {
+    return CompletedTrailsSharedPreferences(
       await SharedPreferences.getInstance(),
     );
   });
