@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travel_more/bloc/region_bloc.dart';
 import 'package:travel_more/data/trail_repository_firestore.dart';
+import 'package:travel_more/view/screens/trail/trail_screen.dart';
 
 class RegionScreen extends StatelessWidget {
   final String regionId;
@@ -35,7 +36,7 @@ class RegionScreen extends StatelessWidget {
                   return ElevatedButton(
                     onPressed: () => Navigator.push(
                       context,
-                      RegionScreen.route(trail.id),
+                      TrailScreen.route(trail.id),
                     ),
                     child: Text(trail.title),
                   );

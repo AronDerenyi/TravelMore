@@ -8,11 +8,10 @@ class TrailBloc extends Bloc<TrailBlocEvent, TrailBlocState> {
 
   TrailBloc() : super(LoadingTrailState()) {
     on<LoadTrailEvent>((event, emit) async {
+      emit(LoadingTrailState());
       var trail = await repository.getTrail(event.trailId);
       emit(TrailReadyState(trail));
     });
-
-    add(LoadTrailEvent(trailId: "ak_05"));
   }
 }
 
@@ -21,7 +20,7 @@ abstract class TrailBlocEvent {}
 class LoadTrailEvent extends TrailBlocEvent {
   final String trailId;
 
-  LoadTrailEvent({required this.trailId});
+  LoadTrailEvent(this.trailId);
 }
 
 abstract class TrailBlocState {}
