@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:travel_more/bloc/favorite_trails_bloc.dart';
 import 'package:travel_more/bloc/featured_trails_bloc.dart';
 import 'package:travel_more/bloc/regions_bloc.dart';
 import 'package:travel_more/data/featured_trails_repository_firestore.dart';
@@ -32,6 +33,9 @@ class _MainScreenState extends State<MainScreen> {
       providers: [
         BlocProvider(
           create: (context) => FeaturedTrailsBloc()..add(LoadTrailsEvent()),
+        ),
+        BlocProvider(
+          create: (context) => FavoriteTrailsBloc()..add(LoadFavoritesEvent()),
         ),
         BlocProvider(
           create: (context) => RegionsBloc()..add(LoadRegionsEvent()),

@@ -32,6 +32,16 @@ class TrailScreen extends StatelessWidget {
                 child: Column(children: [
                   Text(trail.title),
                   Text(trail.description),
+                  Row(children: [
+                    Checkbox(value: state.favorite, onChanged: (value) {
+                      if (value == true) {
+                        context.read<TrailBloc>().add(AddToFavoritesEvent());
+                      } else {
+                        context.read<TrailBloc>().add(RemoveFromFavoritesEvent());
+                      }
+                    }),
+                    const Text("Favorite"),
+                  ]),
                   for (var image in trail.images) Image.network(image),
                   Text("Distance: ${trail.distance}"),
                   Text("Elevation +: ${trail.elevation.up}"),

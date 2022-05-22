@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:travel_more/domain/model/featured.dart';
 import 'package:travel_more/domain/repositories/featured_trails_repository.dart';
