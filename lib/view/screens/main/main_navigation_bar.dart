@@ -24,8 +24,9 @@ class MainNavigationBar extends StatelessWidget {
       offset: Offset(0, 12),
     );
 
-    var iconColor =
-        (active) => active ? colors.primary : colors.onSurfaceVariant;
+    Color iconColor(active) {
+      return active ? colors.primary : colors.onSurface.withAlpha(63);
+    }
 
     return Container(
       decoration: BoxDecoration(

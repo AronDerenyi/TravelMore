@@ -18,19 +18,19 @@ class DiscoverRegionRow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Text(
             region.title,
-            style: textTheme.titleLarge,
+            style: textTheme.headlineSmall,
           ),
         ),
         const SizedBox(height: 12),
         SizedBox(
           height: 240,
           child: ListView.separated(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             scrollDirection: Axis.horizontal,
-            separatorBuilder: (context, index) => SizedBox(width: 16),
+            separatorBuilder: (context, index) => const SizedBox(width: 16),
             itemCount: region.trails.length,
             itemBuilder: (context, index) => DiscoverTrailCard(
               trail: region.trails[index],

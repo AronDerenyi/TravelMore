@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:travel_more/config.dart';
 import 'package:travel_more/domain/repositories/completed_trails_repository.dart';
 
 import 'trail_set_shared_preferences.dart';
 
 class CompletedTrailsSharedPreferences implements CompletedTrailsRepository {
-  static const String _key = "completed";
   final TrailSetSharedPreferences _trailSet;
 
   CompletedTrailsSharedPreferences(SharedPreferences preferences)
-      : _trailSet = TrailSetSharedPreferences(preferences, _key);
+      : _trailSet = TrailSetSharedPreferences(preferences, Config.completedKey);
 
   @override
   Future<Set<String>> getCompletedTrailIds() async => _trailSet.getTrailIds();
@@ -21,7 +21,7 @@ class CompletedTrailsSharedPreferences implements CompletedTrailsRepository {
   Future<bool> addCompleted(String trailId) async => _trailSet.add(trailId);
 
   @override
-  Future<bool> removeCopmleted(String trailId) async =>
+  Future<bool> removeCompleted(String trailId) async =>
       _trailSet.remove(trailId);
 
   @override

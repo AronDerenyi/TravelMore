@@ -4,6 +4,6 @@ abstract class CompletedTrailsRepository {
   Future<Set<String>> getCompletedTrailIds();
   Future<bool> isCompleted(String trailId);
   Future<bool> addCompleted(String trailId);
-  Future<bool> removeCopmleted(String trailId);
+  Future<bool> removeCompleted(String trailId);
   StreamSubscription<Set<String>> listen(void Function(Set<String> event) onData);
 }

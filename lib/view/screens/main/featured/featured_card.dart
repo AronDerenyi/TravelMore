@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:travel_more/bloc/featured_trails_bloc.dart';
 import 'package:travel_more/view/screens/trail/trail_screen.dart';
@@ -13,13 +15,18 @@ class FeaturedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    var textTheme = theme.primaryTextTheme;
+    var textTheme = theme.textTheme;
+    var primaryTextTheme = theme.primaryTextTheme;
+    var colors = theme.colorScheme;
 
-    var aspectRatio = 1.5;
-    var titlePadding = const Offset(20, 12);
+    var aspectRatio = 1.0;
+    var headlinePadding =
+        const EdgeInsets.symmetric(horizontal: 20, vertical: 12);
+    var titlePadding = const EdgeInsets.symmetric(horizontal: 20, vertical: 12);
+    var titleSpacing = 2.0;
     var borderRadius = const BorderRadius.all(Radius.circular(16));
     var boxShadow = const BoxShadow(
-      color: Colors.black38,
+      color: Colors.black26,
       blurRadius: 24,
       offset: Offset(0, 12),
     );
@@ -42,9 +49,52 @@ class FeaturedCard extends StatelessWidget {
                 ),
               ),
               Positioned(
-                left: titlePadding.dx,
-                bottom: titlePadding.dy,
-                child: Text(item.title, style: textTheme.headlineMedium),
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Padding(
+                      padding: headlinePadding,
+                      child: Text(
+                        item.title,
+                        style: primaryTextTheme.headlineMedium,
+                      ),
+                    ),
+                    ClipRect(
+                      child: BackdropFilter(
+                        filter: ImageFilter.compose(
+                          inner: ImageFilter.blur(
+                            sigmaX: 8.0,
+                            sigmaY: 8.0,
+                          ),
+                          outer: ColorFilter.mode(
+                            colors.surface.withAlpha(200),
+                            BlendMode.srcOver,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: titlePadding,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                item.trailTitle,
+                                style: textTheme.titleMedium,
+                              ),
+                              SizedBox(height: titleSpacing),
+                              Text(
+                                item.regionTitle,
+                                style: textTheme.labelMedium,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Positioned.fill(
                 child: Material(

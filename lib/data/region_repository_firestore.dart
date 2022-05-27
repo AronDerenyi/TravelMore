@@ -14,6 +14,13 @@ class RegionRepositoryFirestore extends RegionRepository {
         )
         .toList();
   }
+  
+  @override
+  Future<Region> getRegion(String id) async {
+    var db = FirebaseFirestore.instance;
+    var data = await db.collection("regions").doc(id).get();
+    return RegionFirestore.fromFirestore(data);
+  }
 }
 
 extension RegionFirestore on Region {

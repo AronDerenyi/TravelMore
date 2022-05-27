@@ -2,20 +2,33 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travel_more/dependencies.dart';
 import 'package:travel_more/domain/model/featured.dart';
 import 'package:travel_more/domain/repositories/featured_trails_repository.dart';
+import 'package:travel_more/domain/repositories/region_repository.dart';
+import 'package:travel_more/domain/repositories/trail_repository.dart';
 
 class FeaturedTrailsBloc
     extends Bloc<FeaturedTrailsBlocEvent, FeaturedTrailsBlocState> {
-  FeaturedTrailsRepository repository = injector();
+  final FeaturedTrailsRepository _featuredTrailsRepository = injector();
+  final TrailRepository _trailRepository = injector();
+  final RegionRepository _regionRepository = injector();
 
   FeaturedTrailsBloc() : super(LoadingFeaturedState()) {
     on<LoadFeaturedEvent>((event, emit) async {
       emit(LoadingFeaturedState());
-      var items = (await repository.getFeaturedTrails())
-          .map<FeaturedItem>(
-            (data) => FeaturedItem(data.title, data.image, data.trailId),
-          )
-          .toList();
-      emit(FeaturedReadyState(items));
+      var featured = await _featuredTrailsRepository.getFeaturedTrails();
+      var featuredItems = await Future.wait(featured.map<Future<FeaturedItem>>(
+        (featured) async {
+          var trail = await _trailRepository.getTrail(featured.trailId);
+          var region = await _regionRepository.getRegion(trail.regionId);
+          return FeaturedItem(
+            featured.image,
+            featured.title,
+            trail.title,
+            region.title,
+            featured.trailId,
+          );
+        },
+      ));
+      emit(FeaturedReadyState(featuredItems));
     });
   }
 }
@@ -35,9 +48,17 @@ class FeaturedReadyState extends FeaturedTrailsBlocState {
 }
 
 class FeaturedItem {
-  final String title;
   final String image;
+  final String title;
+  final String trailTitle;
+  final String regionTitle;
   final String trailId;
 
-  FeaturedItem(this.title, this.image, this.trailId);
+  FeaturedItem(
+    this.image,
+    this.title,
+    this.trailTitle,
+    this.regionTitle,
+    this.trailId,
+  );
 }

@@ -13,6 +13,6 @@ class AppColors {
         onError: Colors.white,
         onBackground: Colors.black,
         onSurface: Colors.black,
-        onSurfaceVariant: Colors.grey,
+        onSurfaceVariant: Color.fromARGB(255, 95, 95, 95),
       );
 }

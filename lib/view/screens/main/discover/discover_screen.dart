@@ -25,7 +25,7 @@ class DiscoverScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               if (index == 0) {
                 return Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+                  padding: const EdgeInsets.symmetric(horizontal: 24).copyWith(bottom: 24),
                   child: Text(
                     "Discover",
                     style: textTheme.headlineMedium,
