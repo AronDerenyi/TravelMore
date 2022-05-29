@@ -33,7 +33,7 @@ class FeaturedCard extends StatelessWidget {
 
     return AspectRatio(
       aspectRatio: aspectRatio,
-      child: Container(
+      child: DecoratedBox(
         decoration: BoxDecoration(
           borderRadius: borderRadius,
           boxShadow: [boxShadow],
@@ -70,7 +70,7 @@ class FeaturedCard extends StatelessWidget {
                             sigmaY: 8.0,
                           ),
                           outer: ColorFilter.mode(
-                            colors.surface.withAlpha(200),
+                            colors.surface.withAlpha(220),
                             BlendMode.srcOver,
                           ),
                         ),

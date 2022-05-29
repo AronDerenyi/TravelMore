@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travel_more/bloc/favorite_trails_bloc.dart';
-import 'package:travel_more/view/screens/trail/trail_screen.dart';
+import 'package:travel_more/view/screens/main/favorites/favorite_card.dart';
+import 'package:travel_more/view/screens/main/favorites/favorites_header.dart';
 
 class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({Key? key}) : super(key: key);
@@ -15,26 +16,23 @@ class FavoritesScreen extends StatelessWidget {
         }
 
         if (state is FavoritesReadyState) {
-          return ListView(
-            children: [
-              Text("Distance: ${state.distance}"),
-              Text("Completed: ${state.completed}"),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
-                itemCount: state.favoriteTrails.length,
-                itemBuilder: (context, index) {
-                  var trail = state.favoriteTrails[index];
-                  return ElevatedButton(
-                    onPressed: () => Navigator.push(
-                      context,
-                      TrailScreen.route(trail.id),
-                    ),
-                    child: Text(trail.title),
-                  );
-                },
-              ),
-            ],
+          var safeArea = MediaQuery.of(context).padding;
+
+          return ListView.separated(
+            padding: safeArea.add(const EdgeInsets.all(24)),
+            itemCount: state.trails.length + 1,
+            separatorBuilder: (context, index) => const SizedBox(height: 24),
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                return const FavoritesHeader();
+              } else {
+                var trail = state.trails[index - 1];
+                return FavoriteCard(
+                  key: ValueKey(trail.trailId),
+                  trail: trail
+                );
+              }
+            },
           );
         }
 

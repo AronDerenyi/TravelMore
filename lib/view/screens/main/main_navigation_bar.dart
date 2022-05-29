@@ -28,7 +28,7 @@ class MainNavigationBar extends StatelessWidget {
       return active ? colors.primary : colors.onSurface.withAlpha(63);
     }
 
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: const BorderRadius.all(Radius.circular(16)),

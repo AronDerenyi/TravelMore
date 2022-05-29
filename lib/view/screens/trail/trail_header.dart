@@ -40,7 +40,7 @@ class TrailHeader extends StatelessWidget {
                       ),
                       SizedBox(height: spacing),
                       Text(
-                        state.title,
+                        state.regionTitle,
                         style: textTheme.labelLarge,
                       ),
                     ],

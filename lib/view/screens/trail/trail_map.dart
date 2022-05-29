@@ -24,7 +24,7 @@ class TrailMap extends StatelessWidget {
                 .toList(),
           );
 
-          return MapWidget(trails: [trail]);
+          return MapWidget(padding: 0.4, trails: [trail]);
         }
 
         throw Exception();

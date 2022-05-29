@@ -3,10 +3,12 @@ import 'package:travel_more/dependencies.dart';
 import 'package:travel_more/domain/model/trail.dart';
 import 'package:travel_more/domain/model/coordinates.dart';
 import 'package:travel_more/domain/repositories/favorite_trails_repository.dart';
+import 'package:travel_more/domain/repositories/region_repository.dart';
 import 'package:travel_more/domain/repositories/trail_repository.dart';
 
 class TrailBloc extends Bloc<TrailBlocEvent, TrailBlocState> {
   final TrailRepository _trailRepository = injector();
+  final RegionRepository _regionRepository = injector();
   final FavoriteTrailsRepository _favoritesRepository = injector();
 
   Trail? _trail;
@@ -18,10 +20,13 @@ class TrailBloc extends Bloc<TrailBlocEvent, TrailBlocState> {
       var trailFuture = _trailRepository.getTrail(event.trailId);
       var favoriteFuture = _favoritesRepository.isFavorite(event.trailId);
       var trail = await trailFuture;
+      var region = await _regionRepository.getRegion(trail.regionId);
       _trail = trail;
+
 
       emit(TrailReadyState(
         trail.title,
+        region.title,
         trail.description,
         trail.distance,
         trail.elevation.up,
@@ -72,6 +77,7 @@ class LoadingTrailState extends TrailBlocState {}
 
 class TrailReadyState extends TrailBlocState {
   final String title;
+  final String regionTitle;
   final String description;
   final double distance;
   final double posElevation;
@@ -82,6 +88,7 @@ class TrailReadyState extends TrailBlocState {
 
   TrailReadyState(
     this.title,
+    this.regionTitle,
     this.description,
     this.distance,
     this.posElevation,
@@ -96,6 +103,7 @@ class TrailReadyState extends TrailBlocState {
   }) =>
       TrailReadyState(
         title,
+        regionTitle,
         description,
         distance,
         posElevation,

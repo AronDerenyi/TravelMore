@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travel_more/dependencies.dart';
-import 'package:travel_more/domain/model/trail.dart';
+import 'package:travel_more/domain/model/coordinates.dart';
 import 'package:travel_more/domain/repositories/completed_trails_repository.dart';
 import 'package:travel_more/domain/repositories/favorite_trails_repository.dart';
 import 'package:travel_more/domain/repositories/trail_repository.dart';
@@ -17,32 +17,72 @@ class FavoriteTrailsBloc
   StreamSubscription? _completedListener;
 
   FavoriteTrailsBloc() : super(LoadingFavoritesState()) {
-    _favoriteListener = _favoritesRepository.listen((event) {
-      add(LoadFavoritesEvent());
+    _favoriteListener = _favoritesRepository.listen((favoriteIds) {
+      add(_UpdateFavoritesEvent(favoriteIds));
     });
 
-    _completedListener = _completedRepository.listen((event) {
-      add(LoadFavoritesEvent());
+    _completedListener = _completedRepository.listen((completedIds) {
+      add(_UpdateCompletedEvent(completedIds));
     });
 
     on<LoadFavoritesEvent>((event, emit) async {
       emit(LoadingFavoritesState());
-      List<Trail> trails = await Future.wait(
-        (await _favoritesRepository.getFavoriteTrailIds())
-            .map((id) async => _trailRepository.getTrail(id)),
-      );
+      var favoriteIds = await _favoritesRepository.getFavoriteTrailIds();
+      add(_UpdateFavoritesEvent(favoriteIds));
+    });
 
-      var distance = 0.0;
-      var completed = 0.0;
-      trails.sort((a, b) => a.title.compareTo(b.title));
+    on<SetCompletedEvent>((event, emit) {
+      _completedRepository.addCompleted(event.trailId);
+    });
+
+    on<UnsetCompletedEvent>((event, emit) {
+      _completedRepository.removeCompleted(event.trailId);
+    });
+
+    on<_UpdateFavoritesEvent>((event, emit) async {
+      var favoriteIds = event.favoriteTrailIds;
+      var state = this.state;
+
+      var trails = state is FavoritesReadyState
+          ? List<FavoriteTrailItem>.from(state.trails)
+          : <FavoriteTrailItem>[];
+
+      trails.removeWhere((trail) => !favoriteIds.contains(trail.trailId));
       for (var trail in trails) {
-        distance += trail.distance;
-        if (await _completedRepository.isCompleted(trail.id)) {
-          completed += trail.distance;
-        }
+        favoriteIds.remove(trail.trailId);
       }
 
-      emit(FavoritesReadyState(trails, distance, completed));
+      await Future.wait(favoriteIds.map<Future<void>>((trailId) async {
+        var trail = await _trailRepository.getTrail(trailId);
+        trails.add(FavoriteTrailItem(
+          trail.title,
+          trail.images[0],
+          trail.distance,
+          trail.coordinates[trail.coordinates.length ~/ 2],
+          await _completedRepository.isCompleted(trail.id),
+          trail.id,
+        ));
+      }));
+
+      trails.sort((a, b) => a.title.compareTo(b.title));
+      emit(FavoritesReadyState(trails));
+    });
+
+    on<_UpdateCompletedEvent>((event, emit) {
+      var completedIds = event.completedTrailIds;
+      var state = this.state;
+
+      if (state is FavoritesReadyState) {
+        var trails = state.trails
+            .map(
+              (trail) => trail.copyWith(
+                completed: completedIds.contains(trail.trailId),
+              ),
+            )
+            .toList();
+
+        emit(FavoritesReadyState(trails));
+      }
     });
   }
 
@@ -54,22 +94,83 @@ class FavoriteTrailsBloc
   }
 }
 
+// Events
+
 abstract class FavoriteTrailsBlocEvent {}
 
 class LoadFavoritesEvent extends FavoriteTrailsBlocEvent {}
+
+class SetCompletedEvent extends FavoriteTrailsBlocEvent {
+  final String trailId;
+
+  SetCompletedEvent(this.trailId);
+}
+
+class UnsetCompletedEvent extends FavoriteTrailsBlocEvent {
+  final String trailId;
+
+  UnsetCompletedEvent(this.trailId);
+}
+
+class _UpdateFavoritesEvent extends FavoriteTrailsBlocEvent {
+  final Set<String> favoriteTrailIds;
+
+  _UpdateFavoritesEvent(this.favoriteTrailIds);
+}
+
+class _UpdateCompletedEvent extends FavoriteTrailsBlocEvent {
+  final Set<String> completedTrailIds;
+
+  _UpdateCompletedEvent(this.completedTrailIds);
+}
+
+// States
 
 abstract class FavoriteTrailsBlocState {}
 
 class LoadingFavoritesState extends FavoriteTrailsBlocState {}
 
 class FavoritesReadyState extends FavoriteTrailsBlocState {
-  final List<Trail> favoriteTrails;
-  final double distance;
-  final double completed;
+  final List<FavoriteTrailItem> trails;
+  late final double distance;
+  late final double completed;
 
   FavoritesReadyState(
-    this.favoriteTrails,
+    this.trails,
+  ) {
+    distance = trails.fold<double>(0, (dist, trail) => dist + trail.distance);
+    completed = trails
+        .where((trail) => trail.completed)
+        .fold<double>(0, (dist, trail) => dist + trail.distance);
+  }
+}
+
+class FavoriteTrailItem {
+  final String title;
+  final String image;
+  final double distance;
+  final Coordinates coordinates;
+  final bool completed;
+  final String trailId;
+
+  FavoriteTrailItem(
+    this.title,
+    this.image,
     this.distance,
+    this.coordinates,
     this.completed,
+    this.trailId,
   );
+
+  FavoriteTrailItem copyWith({
+    bool? completed,
+  }) =>
+      FavoriteTrailItem(
+        title,
+        image,
+        distance,
+        coordinates,
+        completed ?? this.completed,
+        trailId,
+      );
 }

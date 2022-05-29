@@ -30,7 +30,7 @@ class TrailSetSharedPreferences {
     }
 
     _set = newSet;
-    _changeStream.add(newSet);
+    _changeStream.add(Set.from(newSet));
     return true;
   }
 
@@ -42,7 +42,7 @@ class TrailSetSharedPreferences {
     }
 
     _set = newSet;
-    _changeStream.add(newSet);
+    _changeStream.add(Set.from(newSet));
     return true;
   }
 
