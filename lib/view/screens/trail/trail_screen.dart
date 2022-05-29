@@ -25,10 +25,10 @@ class TrailScreen extends StatelessWidget {
     var mapSize = 400 + safeArea.top;
     var overlap = 128.0;
 
-    return Container(
-      color: colors.background,
-      child: BlocProvider(
-        create: (context) => TrailBloc()..add(LoadTrailEvent(trailId)),
+    return BlocProvider(
+      create: (context) => TrailBloc()..add(LoadTrailEvent(trailId)),
+      child: Container(
+        color: colors.background,
         child: Stack(children: [
           Positioned(
             left: 0,
