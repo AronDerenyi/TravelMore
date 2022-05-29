@@ -24,81 +24,80 @@ class TrailScreen extends StatelessWidget {
 
     var mapSize = 400 + safeArea.top;
     var overlap = 128.0;
-    var boxShadow = const BoxShadow(
-      color: Colors.black26,
-      blurRadius: 24,
-    );
 
-    return BlocProvider(
-      create: (context) => TrailBloc()..add(LoadTrailEvent(trailId)),
-      child: Stack(children: [
-        Positioned(
-          left: 0,
-          right: 0,
-          top: 0,
-          height: mapSize,
-          child: ScrollTranslation(
-            controller: _scrollController,
-            direction: const Offset(0, 0.4),
-            child: const TrailMap(),
+    return Container(
+      color: colors.background,
+      child: BlocProvider(
+        create: (context) => TrailBloc()..add(LoadTrailEvent(trailId)),
+        child: Stack(children: [
+          Positioned(
+            left: 0,
+            right: 0,
+            top: 0,
+            height: mapSize,
+            child: ScrollTranslation(
+              controller: _scrollController,
+              direction: const Offset(0, 0.4),
+              child: const TrailMap(),
+            ),
           ),
-        ),
-        Positioned.fill(
-          child: CustomScrollView(
-            controller: _scrollController,
-            slivers: [
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    SizedBox(height: mapSize - overlap),
-                    SizedBox(
-                      height: overlap,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              colors.surface.withAlpha(0),
-                              colors.surface,
-                            ],
+          Positioned.fill(
+            child: CustomScrollView(
+              controller: _scrollController,
+              slivers: [
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(height: mapSize - overlap),
+                      SizedBox(
+                        height: overlap,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                colors.surface.withAlpha(0),
+                                colors.surface,
+                              ],
+                            ),
                           ),
+                          child: const TrailHeader(),
                         ),
-                        child: const TrailHeader(),
                       ),
-                    ),
-                    Expanded(
-                      child: Material(
-                        color: colors.surface,
-                        child: const TrailDetails(),
+                      Expanded(
+                        child: Material(
+                          color: colors.surface,
+                          child: const TrailDetails(),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        Positioned(
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Material(
-                type: MaterialType.circle,
-                color: colors.surface,
-                clipBehavior: Clip.hardEdge,
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                  onPressed: () => Navigator.pop(context),
+          Positioned(
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Material(
+                  type: MaterialType.circle,
+                  color: colors.surface,
+                  clipBehavior: Clip.hardEdge,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                    onPressed: () => Navigator.pop(context),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ]),
+        ]),
+      ),
     );
   }
 }

@@ -29,7 +29,7 @@ class FeaturedScreen extends StatelessWidget {
                   children: [
                     Row(children: [
                       const Icon(
-                        Icons.directions_walk,
+                        Icons.directions_walk_rounded,
                         size: 16,
                       ),
                       Text(

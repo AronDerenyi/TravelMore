@@ -37,7 +37,7 @@ class DiscoverTrailCard extends StatelessWidget {
                     right: 8,
                     bottom: 8,
                     child: Icon(
-                      Icons.favorite,
+                      Icons.favorite_rounded,
                       color: colors.onPrimary,
                     ),
                   ),
@@ -60,7 +60,7 @@ class DiscoverTrailCard extends StatelessWidget {
           const SizedBox(height: 4),
           Row(children: [
             const Icon(
-              Icons.directions_walk,
+              Icons.directions_walk_rounded,
               size: 14,
             ),
             Text(

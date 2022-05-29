@@ -70,8 +70,8 @@ class FavoriteCard extends StatelessWidget {
                 IconButton(
                   icon: Icon(
                     trail.completed
-                        ? Icons.check
-                        : Icons.directions_walk,
+                        ? Icons.check_rounded
+                        : Icons.directions_walk_rounded,
                     color: trail.completed
                         ? colors.primary
                         : colors.onSurfaceVariant,

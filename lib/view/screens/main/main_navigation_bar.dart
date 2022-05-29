@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class MainNavigationBar extends StatelessWidget {
@@ -28,40 +30,49 @@ class MainNavigationBar extends StatelessWidget {
       return active ? colors.primary : colors.onSurface.withAlpha(63);
     }
 
-    return DecoratedBox(
+    return Container(
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: colors.surface,
         borderRadius: const BorderRadius.all(Radius.circular(16)),
         boxShadow: [boxShadow],
       ),
-      child: Material(
-        type: MaterialType.transparency,
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: paddingVertical,
-            horizontal: paddingHorizontal,
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.home),
-                color: iconColor(selectedIndex == 0),
-                onPressed: () => onSelected(0),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(
+          sigmaX: 16,
+          sigmaY: 16,
+        ),
+        child: Opacity(
+          opacity: 0.75,
+          child: Material(
+            color: colors.surface,
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: paddingVertical,
+                horizontal: paddingHorizontal,
               ),
-              SizedBox(width: spacing),
-              IconButton(
-                icon: const Icon(Icons.explore),
-                color: iconColor(selectedIndex == 1),
-                onPressed: () => onSelected(1),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.home_rounded),
+                    color: iconColor(selectedIndex == 0),
+                    onPressed: () => onSelected(0),
+                  ),
+                  SizedBox(width: spacing),
+                  IconButton(
+                    icon: const Icon(Icons.explore_rounded),
+                    color: iconColor(selectedIndex == 1),
+                    onPressed: () => onSelected(1),
+                  ),
+                  SizedBox(width: spacing),
+                  IconButton(
+                    icon: const Icon(Icons.favorite_rounded),
+                    color: iconColor(selectedIndex == 2),
+                    onPressed: () => onSelected(2),
+                  ),
+                ],
               ),
-              SizedBox(width: spacing),
-              IconButton(
-                icon: const Icon(Icons.favorite),
-                color: iconColor(selectedIndex == 2),
-                onPressed: () => onSelected(2),
-              ),
-            ],
+            ),
           ),
         ),
       ),

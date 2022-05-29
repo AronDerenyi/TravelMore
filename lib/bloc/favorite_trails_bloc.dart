@@ -40,7 +40,7 @@ class FavoriteTrailsBloc
     });
 
     on<_UpdateFavoritesEvent>((event, emit) async {
-      var favoriteIds = event.favoriteTrailIds;
+      var favoriteIds = Set.from(event.favoriteTrailIds);
       var state = this.state;
 
       var trails = state is FavoritesReadyState
@@ -69,7 +69,7 @@ class FavoriteTrailsBloc
     });
 
     on<_UpdateCompletedEvent>((event, emit) {
-      var completedIds = event.completedTrailIds;
+      var completedIds = Set.from(event.completedTrailIds);
       var state = this.state;
 
       if (state is FavoritesReadyState) {
